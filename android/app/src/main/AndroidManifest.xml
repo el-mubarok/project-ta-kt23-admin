@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="online.ishhrd.attendanceadmin">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="KT-23 Admin"
         android:name="${applicationName}"
