@@ -5,7 +5,6 @@ import 'package:attendanceappadmin/shared/models/shared_attendance_changed_model
 import 'package:attendanceappadmin/shared/ui/wrappers/wrapper_page.dart';
 import 'package:attendanceappadmin/shared/utils/utils_global.dart';
 import 'package:attendanceappadmin/themes/color.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heroicons/heroicons.dart';
@@ -15,9 +14,13 @@ class ModuleSession extends StatefulWidget {
   const ModuleSession({
     super.key,
     required this.qrCode,
+    required this.start,
+    required this.end,
   });
 
   final String qrCode;
+  final DateTime start;
+  final DateTime end;
 
   @override
   State<StatefulWidget> createState() => _ModuleSession();
@@ -104,7 +107,10 @@ class _ModuleSession extends State<ModuleSession> {
               ],
             ),
             //
-            _CountDown(),
+            _CountDown(
+              startDate: widget.start,
+              endDate: widget.end,
+            ),
           ],
         ),
       ),
@@ -195,6 +201,14 @@ class _ClockState extends State<_Clock> {
 }
 
 class _CountDown extends StatefulWidget {
+  const _CountDown({
+    required this.startDate,
+    required this.endDate,
+  });
+
+  final DateTime startDate;
+  final DateTime endDate;
+
   @override
   State<StatefulWidget> createState() => _CountDownState();
 }
@@ -210,6 +224,8 @@ class _CountDownState extends State<_CountDown> {
 
   @override
   void initState() {
+    startDate = widget.startDate;
+    endDate = widget.endDate;
     composeCountDown();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     super.initState();
@@ -290,17 +306,17 @@ class _CountDownState extends State<_CountDown> {
                     fontSize: 28,
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(left: 4),
-                //   child: Text(
-                //     "$percentageLeft",
-                //     style: const TextStyle(
-                //       fontWeight: FontWeight.w400,
-                //       color: AppColors.black,
-                //       fontSize: 14,
-                //     ),
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Text(
+                    "$percentageLeft",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
               ],
             ),
           //

@@ -13,10 +13,13 @@ class HomeRepository {
     SharedSessionGenerated? data;
 
     try {
-      FormData postData = FormData.fromMap({
-        "date": DateFormat("y-M-d").format(DateTime.now()),
+      Map<String, dynamic> postDataMap = {
+        "date": DateFormat("y-M-d H:m:s").format(DateTime.now()),
         "admin_id": userId,
-      });
+      };
+      FormData postData = FormData.fromMap(postDataMap);
+
+      print(postDataMap);
 
       Response response = await http.post(
         path,

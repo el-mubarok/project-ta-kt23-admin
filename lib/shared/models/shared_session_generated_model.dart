@@ -37,15 +37,23 @@ class SharedSessionGenerated {
 class Data {
   Data({
     required this.qrCode,
+    required this.start,
+    required this.end,
   });
 
   final String qrCode;
+  final DateTime start;
+  final DateTime end;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         qrCode: json["qr_code"],
+        start: DateTime.parse(json["start"]),
+        end: DateTime.parse(json["end"]),
       );
 
   Map<String, dynamic> toJson() => {
         "qr_code": qrCode,
+        "start": start.toIso8601String(),
+        "end": end.toIso8601String(),
       };
 }

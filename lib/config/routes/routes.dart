@@ -24,6 +24,8 @@ class Routes {
         return CupertinoPageRoute(
           builder: (_) => ModuleSession(
             qrCode: arg['qrCode'],
+            start: arg['start_date'],
+            end: arg['end_date'],
           ),
         );
 

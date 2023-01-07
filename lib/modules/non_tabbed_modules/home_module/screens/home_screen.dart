@@ -1,4 +1,3 @@
-import 'package:attendanceappadmin/config/assets.dart';
 import 'package:attendanceappadmin/config/routes/route_names.dart';
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/bloc/home_bloc.dart';
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/data/home_repository.dart';
@@ -10,7 +9,6 @@ import 'package:attendanceappadmin/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class ModuleHome extends StatefulWidget {
   const ModuleHome({super.key});
@@ -88,6 +86,8 @@ class _ModuleHome extends State<ModuleHome> {
                         NamedRoute.pageSession,
                         arguments: {
                           'qrCode': state.data?.data.qrCode,
+                          'start_date': state.data?.data.start,
+                          'end_date': state.data?.data.end,
                         },
                       );
                     });
