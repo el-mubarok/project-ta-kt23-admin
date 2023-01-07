@@ -1,0 +1,6 @@
+package online.ishhrd.attendanceadmin
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
