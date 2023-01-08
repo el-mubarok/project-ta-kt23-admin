@@ -43,7 +43,7 @@ class _MyAppState extends State<_MyApp> {
   Future<void> initMessaging() async {
     OneSignal.shared.setLogLevel(OSLogLevel.none, OSLogLevel.none);
 
-    await OneSignal.shared.setAppId(AppConstants.onesignalAppId);
+    await OneSignal.shared.setAppId(AppConfigConstant.onesignalAppId);
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
@@ -72,6 +72,7 @@ class _MyAppState extends State<_MyApp> {
       onGenerateRoute: Routes.generatedRoute,
       initialRoute: NamedRoute.pageHome,
       theme: ThemeData(
+        fontFamily: 'Poppins',
         primaryColor: AppColors.primary,
         useMaterial3: true,
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -79,6 +80,7 @@ class _MyAppState extends State<_MyApp> {
         ),
       ),
       darkTheme: ThemeData(
+        fontFamily: 'Poppins',
         primaryColor: AppColors.primary,
         useMaterial3: true,
         colorScheme: ColorScheme.fromSwatch().copyWith(

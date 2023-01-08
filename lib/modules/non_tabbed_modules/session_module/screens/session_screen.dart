@@ -8,6 +8,7 @@ import 'package:attendanceappadmin/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class ModuleSession extends StatefulWidget {
@@ -52,65 +53,99 @@ class _ModuleSession extends State<ModuleSession> {
   @override
   Widget build(BuildContext context) {
     return WrapperPage(
-      statusBarColor: AppColors.white,
-      navigationBarColor: AppColors.white,
+      statusBarColor: AppColors.quartenary,
+      navigationBarColor: AppColors.quartenary,
       hasPadding: false,
       child: Container(
-        height: MediaQuery.of(context).size.height - 24,
-        color: AppColors.transparent,
+        height: MediaQuery.of(context).size.height,
+        color: AppColors.quartenary,
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            _Clock(),
+            _CountDown(
+              startDate: widget.start,
+              endDate: widget.end,
+            ),
             //
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               alignment: WrapAlignment.center,
               direction: Axis.vertical,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 8,
+                //
+                Container(
+                  width: 300,
+                  height: 300,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(38),
+                    boxShadow: const [
+                      BoxShadow(
+                        offset: Offset(0, 25),
+                        spreadRadius: -12,
+                        blurRadius: 50,
+                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                      ),
+                    ],
+                  ),
+                  child: PrettyQr(
+                    image: const AssetImage(AppAssets.logo),
+                    size: 200,
+                    elementColor: AppColors.primary,
+                    data: qrData,
+                    errorCorrectLevel: QrErrorCorrectLevel.M,
+                    roundEdges: true,
+                  ),
+                ),
+                //
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 32,
+                  ),
+                  child: Text(
+                    // "Kamis, 20 Okt 2023",
+                    DateFormat('EEEE, d MMM y').format(widget.start),
+                    style: const TextStyle(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 28,
+                    ),
+                  ),
+                ),
+                //
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4,
                   ),
                   child: Text(
                     "Scan this QR to attend",
                     style: TextStyle(
-                      color: AppColors.secondary,
+                      color: AppColors.black.withOpacity(0.5),
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
                     ),
                   ),
                 ),
                 //
-                PrettyQr(
-                  image: const AssetImage(AppAssets.logo),
-                  size: 300,
-                  data: qrData,
-                  errorCorrectLevel: QrErrorCorrectLevel.M,
-                  roundEdges: true,
-                ),
-                //
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 8,
-                  ),
-                  child: Text(
-                    // "3 Present, 0 Were late",
-                    "${data?.presentOnTime ?? '0'} Present, ${data?.presentLate ?? '0'} Were late",
-                    style: const TextStyle(
-                      color: AppColors.black,
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(
+                //     top: 8,
+                //   ),
+                //   child: Text(
+                //     // "3 Present, 0 Were late",
+                //     "${data?.presentOnTime ?? '0'} Present, ${data?.presentLate ?? '0'} Were late",
+                //     style: const TextStyle(
+                //       color: AppColors.black,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             //
-            _CountDown(
-              startDate: widget.start,
-              endDate: widget.end,
-            ),
+            _Clock(),
           ],
         ),
       ),
@@ -168,7 +203,7 @@ class _ClockState extends State<_Clock> {
   Widget build(BuildContext context) {
     return Container(
       // height: 100,
-      color: AppColors.white,
+      color: AppColors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -176,19 +211,20 @@ class _ClockState extends State<_Clock> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(right: 8),
+              Padding(
+                padding: const EdgeInsets.only(right: 4),
                 child: HeroIcon(
                   HeroIcons.clock,
-                  style: HeroIconStyle.mini,
-                  color: AppColors.info,
+                  style: HeroIconStyle.outline,
+                  color: AppColors.black.withOpacity(0.5),
+                  size: 14,
                 ),
               ),
               Text(
-                "$hours:$minutes:$seconds",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.black,
+                "$hours : $minutes : $seconds",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black.withOpacity(0.5),
                   fontSize: 18,
                 ),
               ),
@@ -286,37 +322,49 @@ class _CountDownState extends State<_CountDown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 100,
-      color: AppColors.white,
+      padding: const EdgeInsets.only(top: 32),
+      color: AppColors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (percentageLeft > 0)
+            Padding(
+              padding: const EdgeInsets.only(),
+              child: Text(
+                "Time left",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black.withOpacity(0.5),
+                  fontSize: 14,
+                ),
+              ),
+            ),
           if (percentageLeft > 0)
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "$hours:$minutes:$seconds",
+                  "$hours : $minutes : $seconds",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     color: percentageLeft <= 0
                         ? AppColors.danger
-                        : AppColors.black,
-                    fontSize: 28,
+                        : AppColors.black.withOpacity(0.5),
+                    fontSize: 40,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(
-                    "$percentageLeft",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.black,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 4),
+                //   child: Text(
+                //     "$percentageLeft",
+                //     style: const TextStyle(
+                //       fontWeight: FontWeight.w400,
+                //       color: AppColors.black,
+                //       fontSize: 14,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           //
@@ -326,7 +374,7 @@ class _CountDownState extends State<_CountDown> {
               child: LinearProgressIndicator(
                 value: percentageLeft / 100,
                 minHeight: 4,
-                backgroundColor: AppColors.primaryDark,
+                backgroundColor: AppColors.secondary,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   percentageLeft <= 100 && percentageLeft >= 50
                       ? AppColors.success
@@ -341,13 +389,13 @@ class _CountDownState extends State<_CountDown> {
             ),
           //
           if (percentageLeft <= 0)
-            const Padding(
-              padding: EdgeInsets.only(top: 8),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
               child: Text(
                 "LATE ATTENDANCE",
                 style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.danger,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.danger.withOpacity(0.8),
                   fontSize: 20,
                 ),
               ),

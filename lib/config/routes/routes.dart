@@ -10,18 +10,18 @@ class Routes {
     switch (settings.name) {
       //
       case NamedRoute.tab:
-        return CupertinoPageRoute(
+        return MaterialPageRoute(
           builder: (_) => const Tabs(),
         );
 
       case NamedRoute.pageHome:
-        return CupertinoPageRoute(
+        return MaterialPageRoute(
           builder: (_) => const ModuleHome(),
         );
 
       case NamedRoute.pageSession:
         var arg = (settings.arguments as dynamic);
-        return CupertinoPageRoute(
+        return MaterialPageRoute(
           builder: (_) => ModuleSession(
             qrCode: arg['qrCode'],
             start: arg['start_date'],
@@ -31,7 +31,7 @@ class Routes {
 
       // default page not found
       default:
-        return CupertinoPageRoute(
+        return MaterialPageRoute(
           builder: (_) => const Scaffold(
             body: Center(
               child: Text('Wrong way.'),

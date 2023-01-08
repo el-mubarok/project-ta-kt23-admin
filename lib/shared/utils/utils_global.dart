@@ -1,4 +1,5 @@
 import 'package:attendanceappadmin/shared/models/shared_attendance_changed_model.dart';
+import 'package:attendanceappadmin/shared/models/shared_user_data_model.dart';
 import 'package:flutter/material.dart';
 
 class AppUtilsGlobal {
@@ -12,4 +13,5 @@ class AppUtilsGlobal {
 
   final darkMode = ValueNotifier<bool>(false);
   final attendanceChanged = ValueNotifier<SharedAttendanceChanged?>(null);
+  final userData = ValueNotifier<SharedUserData?>(null);
 }
