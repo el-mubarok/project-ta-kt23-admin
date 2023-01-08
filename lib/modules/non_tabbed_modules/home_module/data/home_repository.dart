@@ -1,5 +1,6 @@
 import 'package:attendanceappadmin/shared/data/api_route.dart';
 import 'package:attendanceappadmin/shared/models/shared_session_generated_model.dart';
+import 'package:attendanceappadmin/shared/models/shared_session_history_model.dart';
 import 'package:attendanceappadmin/shared/utils/helper/helper_http.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -47,6 +48,40 @@ class HomeRepository {
       // other error
       if (kDebugMode) {
         print("sessionStart(), unknown error at: $err");
+      }
+      return null;
+    }
+  }
+
+  Future<SharedSessionHistory?> sessionHistory() async {
+    Dio http = AppHelperHttp().http();
+    String path = AppApiRoutes.pathHistorySession;
+    SharedSessionHistory? data;
+
+    try {
+      Response response = await http.get(
+        path,
+      );
+
+      data = SharedSessionHistory.fromJson(
+        response.data,
+      );
+
+      if (data.code == 200) {
+        return data;
+      } else {
+        return null;
+      }
+    } on DioError catch (err) {
+      // http error
+      if (kDebugMode) {
+        print("sessionHistory(), http error at: $err");
+      }
+      return null;
+    } catch (err) {
+      // other error
+      if (kDebugMode) {
+        print("sessionHistory(), unknown error at: $err");
       }
       return null;
     }

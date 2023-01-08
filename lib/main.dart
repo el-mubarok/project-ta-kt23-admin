@@ -45,6 +45,12 @@ class _MyAppState extends State<_MyApp> {
 
     await OneSignal.shared.setAppId(AppConfigConstant.onesignalAppId);
 
+    final deviceState = await OneSignal.shared.getDeviceState();
+    String? messagingId = deviceState?.userId;
+    AppUtilsGlobal().messagingId.value = messagingId;
+
+    print("messaging id: $messagingId");
+
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
       // Will be called whenever a notification is received in foreground

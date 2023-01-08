@@ -14,4 +14,5 @@ class AppUtilsGlobal {
   final darkMode = ValueNotifier<bool>(false);
   final attendanceChanged = ValueNotifier<SharedAttendanceChanged?>(null);
   final userData = ValueNotifier<SharedUserData?>(null);
+  final messagingId = ValueNotifier<String?>(null);
 }

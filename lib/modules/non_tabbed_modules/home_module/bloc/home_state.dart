@@ -23,3 +23,16 @@ class HomeStateSessionStarted extends HomeState {
 }
 
 class HomeStateSessionStartFailed extends HomeState {}
+
+class HomeStateSessionHistoryLoaded extends HomeState {
+  final SharedSessionHistory? data;
+
+  const HomeStateSessionHistoryLoaded({
+    required this.data,
+  });
+
+  @override
+  List<Object?> get props => [data];
+}
+
+class HomeStateSessionHistoryFailed extends HomeState {}

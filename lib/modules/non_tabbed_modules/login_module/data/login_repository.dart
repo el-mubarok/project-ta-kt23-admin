@@ -14,6 +14,7 @@ class LoginRepository {
     String path = AppApiRoutes.pathLogin;
     String deviceId = await AppHelperDevice().getEncodedDeviceId();
     String role = "admin";
+    String? messagingId = AppUtilsGlobal().messagingId.value;
     SharedUserData? data;
 
     try {
@@ -22,6 +23,7 @@ class LoginRepository {
         "password": password,
         "device_id": deviceId,
         "role": role,
+        "messaging_id": messagingId,
       });
 
       if (kDebugMode) {
@@ -30,6 +32,7 @@ class LoginRepository {
           "password": password,
           "device_id": deviceId,
           "role": role,
+          "messaging_id": messagingId,
         });
       }
 
