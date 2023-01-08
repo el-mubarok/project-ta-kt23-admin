@@ -2,14 +2,17 @@ import 'package:attendanceappadmin/config/routes/route_names.dart';
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/bloc/home_bloc.dart';
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/data/home_repository.dart';
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/screens/part_swiper.dart';
+import 'package:attendanceappadmin/shared/models/shared_user_data_model.dart';
 import 'package:attendanceappadmin/shared/ui/widgets/widget_button.dart';
 import 'package:attendanceappadmin/shared/ui/wrappers/wrapper_page.dart';
 import 'package:attendanceappadmin/shared/utils/helper/helper_common.dart';
 import 'package:attendanceappadmin/shared/utils/helper/helper_device.dart';
+import 'package:attendanceappadmin/shared/utils/utils_global.dart';
 import 'package:attendanceappadmin/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:attendanceappadmin/shared/utils/extension/extension_string_caiptalize.dart';
 
 class ModuleHome extends StatefulWidget {
   const ModuleHome({super.key});
@@ -21,17 +24,18 @@ class ModuleHome extends StatefulWidget {
 class _ModuleHome extends State<ModuleHome> {
   late String deviceId;
   bool sessionStartLoading = false;
+  SharedUserData? userData;
 
   @override
   void initState() {
-    super.initState();
-
+    userData = AppUtilsGlobal().userData.value;
     deviceId = "";
     AppHelperDevice().getEncodedDeviceId().then((value) {
       setState(() {
         deviceId = value;
       });
     });
+    super.initState();
   }
 
   @override
@@ -59,19 +63,28 @@ class _ModuleHome extends State<ModuleHome> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
-                      'Attendence App Admin',
-                      style: TextStyle(
+                      // 'Attendence App Admin',
+                      "Hello, ${(userData?.data?.fullName ?? "").toCapitalizeEachWordCase()}",
+                      style: const TextStyle(
                         fontSize: 16,
                         color: AppColors.white,
                       ),
                     ),
                     //
-                    HeroIcon(
-                      HeroIcons.bars2,
-                      size: 32,
-                      color: AppColors.white,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          NamedRoute.pageAccount,
+                        );
+                      },
+                      child: const HeroIcon(
+                        HeroIcons.bars2,
+                        size: 32,
+                        color: AppColors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -187,40 +200,6 @@ class _ModuleHome extends State<ModuleHome> {
                   );
                 },
               ),
-              //
-              // BlocConsumer<HomeBloc, HomeState>(
-              //   listener: (context, state) {
-              //     if (state is HomeStateLoading) {
-              //     } else if (state is HomeStateSessionStarted) {
-              //       print("from state session created");
-              //       AppHelperCommon().showSnackBar(
-              //         context,
-              //         "Session Created",
-              //       );
-              //       Future.delayed(const Duration(seconds: 2), () {
-              //         Navigator.pushNamed(
-              //           context,
-              //           NamedRoute.pageSession,
-              //           arguments: {
-              //             'qrCode': state.data?.data.qrCode,
-              //             'start_date': state.data?.data.start,
-              //             'end_date': state.data?.data.end,
-              //           },
-              //         );
-              //       });
-              //     }
-              //   },
-              //   builder: (context, state) {
-              //     return WidgetButton(
-              //       label: "Start Session",
-              //       onTap: () {
-              //         context.read<HomeBloc>().add(
-              //               HomeEventStartSession(),
-              //             );
-              //       },
-              //     );
-              //   },
-              // ),
               //
               const PartSwiper(),
               //

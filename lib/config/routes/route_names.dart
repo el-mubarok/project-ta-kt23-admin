@@ -4,6 +4,9 @@ class NamedRoute {
   static const String tabDevice = 'tab/tab_device';
   static const String tabSetting = 'tab/tab_setting';
   //
+  static const String pageLogin = 'login';
+  static const String pageResetPassword = 'reset-password';
+  //
   static const String pageHome = 'home';
   static const String pageAccount = 'account';
   static const String pageSession = 'session';

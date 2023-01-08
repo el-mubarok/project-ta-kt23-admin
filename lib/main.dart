@@ -70,7 +70,7 @@ class _MyAppState extends State<_MyApp> {
     return MaterialApp(
       scaffoldMessengerKey: AppUtilsGlobal().snackbarKey,
       onGenerateRoute: Routes.generatedRoute,
-      initialRoute: NamedRoute.pageHome,
+      initialRoute: NamedRoute.pageLogin,
       theme: ThemeData(
         fontFamily: 'Poppins',
         primaryColor: AppColors.primary,

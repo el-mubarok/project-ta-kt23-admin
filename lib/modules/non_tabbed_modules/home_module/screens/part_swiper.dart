@@ -1,4 +1,5 @@
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/bloc/home_bloc.dart';
+import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/screens/part_session_history.dart';
 import 'package:attendanceappadmin/themes/color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -48,18 +49,17 @@ class _PartSwiper extends State<PartSwiper>
   }
 
   openScanModal(BuildContext ctx) {
-    // showModalBottomSheet<void>(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   backgroundColor: AppColors.transparent,
-    //   builder: (BuildContext context) {
-    //     return FractionallySizedBox(
-    //       heightFactor: 0.9,
-    //       child: ModuleScan(
-    //         height: MediaQuery.of(ctx).size.height,
-    //       ),
-    //     );
-    //   },
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.transparent,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          heightFactor: 0.9,
+          child: PartSessionHistory(),
+        );
+      },
+    );
     // ).then((value) {
     //   // reload summary data
     //   ctx.read<HomeBloc>().add(HomeEventInitData());
