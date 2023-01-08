@@ -21,7 +21,7 @@ class SharedUserData {
   final String message;
 
   factory SharedUserData.fromJson(Map<String, dynamic> json) => SharedUserData(
-        code: json["code"],
+        code: int.parse(json["code"].toString()),
         data: json["data"] != null ? Data.fromJson(json["data"]) : null,
         message: json["message"],
       );
@@ -58,11 +58,11 @@ class Data {
   final DateTime updatedAt;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
+        id: int.parse(json["id"].toString()),
         role: json["role"],
         nip: json["nip"],
         fullName: json["full_name"],
-        department: json["department"],
+        department: int.parse(json["department"].toString()),
         username: json["username"],
         avatar: json["avatar"],
         createdAt: DateTime.parse(json["created_at"]),
