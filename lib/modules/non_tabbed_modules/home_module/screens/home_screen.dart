@@ -3,7 +3,6 @@ import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/bloc/h
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/data/home_repository.dart';
 import 'package:attendanceappadmin/modules/non_tabbed_modules/home_module/screens/part_swiper.dart';
 import 'package:attendanceappadmin/shared/models/shared_user_data_model.dart';
-import 'package:attendanceappadmin/shared/ui/widgets/widget_button.dart';
 import 'package:attendanceappadmin/shared/ui/wrappers/wrapper_page.dart';
 import 'package:attendanceappadmin/shared/utils/helper/helper_common.dart';
 import 'package:attendanceappadmin/shared/utils/helper/helper_device.dart';
@@ -100,21 +99,50 @@ class _ModuleHome extends State<ModuleHome> {
                     print("from state session created");
                     AppHelperCommon().showSnackBar(
                       context,
-                      "Session Created",
+                      // "Session Created",
+                      state.data?.message ?? "",
                     );
                     setState(() {
                       sessionStartLoading = false;
                     });
-                    Future.delayed(const Duration(seconds: 2), () {
-                      Navigator.pushNamed(
-                        context,
-                        NamedRoute.pageSession,
-                        arguments: {
-                          'qrCode': state.data?.data.qrCode,
-                          'start_date': state.data?.data.start,
-                          'end_date': state.data?.data.end,
-                        },
-                      );
+                    if ((state.data?.code ?? 0) >= 200) {
+                      Future.delayed(const Duration(seconds: 2), () {
+                        final routeArg = {
+                          'qrCode': state.data?.data?.qrCode,
+                          'start_date': state.data?.data?.start,
+                        };
+
+                        if ((state.data?.code ?? 0) >= 200) {
+                          routeArg.addAll({
+                            'end_date': state.data?.data?.end,
+                            'end_date_session': state.data?.data?.endSession,
+                          });
+                        }
+
+                        if (state.data?.code == 201) {
+                          routeArg.addAll({
+                            'is_home_attendance': true,
+                          });
+                        }
+
+                        print("qweqeqwe: ${state.data?.data?.endSession}");
+
+                        Navigator.pushNamed(
+                          context,
+                          NamedRoute.pageSession,
+                          arguments: routeArg,
+                          // arguments: {
+                          //   'qrCode': state.data?.data?.qrCode,
+                          //   'start_date': state.data?.data?.start,
+                          //   'end_date': state.data?.data?.end,
+                          //   'end_date_session': state.data?.data?.endSession,
+                          // },
+                        );
+                      });
+                    }
+                  } else if (state is HomeStateSessionStartFailed) {
+                    setState(() {
+                      sessionStartLoading = false;
                     });
                   }
                 },

@@ -17,19 +17,19 @@ class SharedSessionGenerated {
   });
 
   final int code;
-  final Data data;
+  final Data? data;
   final String message;
 
   factory SharedSessionGenerated.fromJson(Map<String, dynamic> json) =>
       SharedSessionGenerated(
         code: json["code"],
-        data: Data.fromJson(json["data"]),
+        data: json["data"] != null ? Data.fromJson(json["data"]) : null,
         message: json["message"],
       );
 
   Map<String, dynamic> toJson() => {
         "code": code,
-        "data": data.toJson(),
+        "data": data != null ? data?.toJson() : null,
         "message": message,
       };
 }
@@ -39,21 +39,27 @@ class Data {
     required this.qrCode,
     required this.start,
     required this.end,
+    required this.endSession,
   });
 
   final String qrCode;
-  final DateTime start;
-  final DateTime end;
+  final DateTime? start;
+  final DateTime? end;
+  final DateTime? endSession;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        qrCode: json["qr_code"],
-        start: DateTime.parse(json["start"]),
-        end: DateTime.parse(json["end"]),
-      );
+      qrCode: json["qr_code"],
+      start: json["start"] != null ? DateTime.parse(json["start"]) : null,
+      end: json["end"] != null ? DateTime.parse(json["end"]) : null,
+      endSession: json["end_session"] != null
+          ? DateTime.parse(json["end_session"])
+          : null);
 
   Map<String, dynamic> toJson() => {
         "qr_code": qrCode,
-        "start": start.toIso8601String(),
-        "end": end.toIso8601String(),
+        "start": start != null ? start?.toIso8601String() : null,
+        "end": end != null ? end?.toIso8601String() : null,
+        "end_session":
+            endSession != null ? endSession?.toIso8601String() : null,
       };
 }

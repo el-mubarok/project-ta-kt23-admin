@@ -27,13 +27,13 @@ class HomeRepository {
         data: postData,
       );
 
-      // print(response.data);
+      print(response.data);
 
       data = SharedSessionGenerated.fromJson(
         response.data,
       );
 
-      if (data.code == 200) {
+      if (data.code >= 200) {
         return data;
       } else {
         return null;
@@ -43,7 +43,10 @@ class HomeRepository {
       if (kDebugMode) {
         print("sessionStart(), http error at: $err");
       }
-      return null;
+      data = SharedSessionGenerated.fromJson(
+        err.response?.data,
+      );
+      return data;
     } catch (err) {
       // other error
       if (kDebugMode) {

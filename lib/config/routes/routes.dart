@@ -42,8 +42,10 @@ class Routes {
         return MaterialPageRoute(
           builder: (_) => ModuleSession(
             qrCode: arg['qrCode'],
+            isHomeAttendance: arg['is_home_attendance'] ?? false,
             start: arg['start_date'],
             end: arg['end_date'],
+            endSession: arg['end_date_session'],
           ),
         );
 

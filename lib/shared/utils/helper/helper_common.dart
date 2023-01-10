@@ -5,6 +5,7 @@ import 'package:attendanceappadmin/shared/utils/utils_global.dart';
 import 'package:attendanceappadmin/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:attendanceappadmin/shared/utils/extension/extension_string_caiptalize.dart';
 
 class AppHelperCommon {
   showSnackBar(
@@ -18,8 +19,15 @@ class AppHelperCommon {
     AppUtilsGlobal().snackbarKey.currentState?.clearSnackBars();
     //
     final snackBarContent = SnackBar(
-      content: Text(message),
+      content: Text(
+        message.toCapitalizeEachWordCase(),
+        style: const TextStyle(
+          color: AppColors.white,
+        ),
+      ),
       duration: Duration(seconds: duration),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: AppColors.black,
     );
     AppUtilsGlobal().snackbarKey.currentState?.showSnackBar(
           snackBarContent,

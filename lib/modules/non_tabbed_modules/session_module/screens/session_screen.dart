@@ -15,13 +15,17 @@ class ModuleSession extends StatefulWidget {
   const ModuleSession({
     super.key,
     required this.qrCode,
+    this.isHomeAttendance = false,
     required this.start,
     required this.end,
+    required this.endSession,
   });
 
   final String qrCode;
-  final DateTime start;
-  final DateTime end;
+  final bool isHomeAttendance;
+  final DateTime? start;
+  final DateTime? end;
+  final DateTime? endSession;
 
   @override
   State<StatefulWidget> createState() => _ModuleSession();
@@ -36,6 +40,7 @@ class _ModuleSession extends State<ModuleSession> {
   void initState() {
     super.initState();
     qrData = widget.qrCode;
+    print("ewrtertert: ${widget.endSession}");
     print(qrData);
     initListener();
   }
@@ -64,10 +69,39 @@ class _ModuleSession extends State<ModuleSession> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            _CountDown(
-              startDate: widget.start,
-              endDate: widget.end,
-            ),
+            if (widget.end != null)
+              _CountDown(
+                startDate: widget.start ?? DateTime.now(),
+                endDate: widget.end ?? DateTime.now(),
+                endSessionDate: widget.endSession ?? DateTime.now(),
+              ),
+            //
+            if (widget.isHomeAttendance)
+              Padding(
+                padding: const EdgeInsets.only(top: 24),
+                child: Column(
+                  children: [
+                    const Text(
+                      "Home Attendance",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                        fontSize: 20,
+                      ),
+                    ),
+                    //
+                    Text(
+                      "Thanks for your time today, see you tomorrow ;)",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.primary.withOpacity(0.8),
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
             //
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -107,7 +141,9 @@ class _ModuleSession extends State<ModuleSession> {
                   ),
                   child: Text(
                     // "Kamis, 20 Okt 2023",
-                    DateFormat('EEEE, d MMM y').format(widget.start),
+                    DateFormat('EEEE, d MMM y').format(
+                      widget.start ?? DateTime.now(),
+                    ),
                     style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w800,
@@ -240,10 +276,12 @@ class _CountDown extends StatefulWidget {
   const _CountDown({
     required this.startDate,
     required this.endDate,
+    required this.endSessionDate,
   });
 
   final DateTime startDate;
   final DateTime endDate;
+  final DateTime endSessionDate;
 
   @override
   State<StatefulWidget> createState() => _CountDownState();
@@ -252,16 +290,19 @@ class _CountDown extends StatefulWidget {
 class _CountDownState extends State<_CountDown> {
   DateTime startDate = DateTime(2023, 1, 4, 23, 10, 21);
   DateTime endDate = DateTime(2023, 1, 4, 24, 10, 21);
+  DateTime endSessionDate = DateTime(2023, 1, 4, 24, 10, 21);
   double percentageLeft = 0;
   String hours = "00";
   String minutes = "00";
   String seconds = "00";
   Timer? countDownTimer;
+  bool hasEnded = false;
 
   @override
   void initState() {
     startDate = widget.startDate;
     endDate = widget.endDate;
+    endSessionDate = widget.endSessionDate;
     composeCountDown();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     super.initState();
@@ -293,10 +334,19 @@ class _CountDownState extends State<_CountDown> {
 
           // cancel timer when reach 0 or less than 0
           if (diff.inSeconds <= 0) {
-            countDownTimer?.cancel();
+            // countDownTimer?.cancel();
             hours = "00";
             minutes = "00";
             seconds = "00";
+          }
+
+          print(endSessionDate);
+
+          if (DateTime.now().isAfter(endSessionDate)) {
+            countDownTimer?.cancel();
+            hasEnded = true;
+            Future.delayed(const Duration(seconds: 2));
+            Navigator.pop(context);
           }
         });
       },
@@ -393,6 +443,19 @@ class _CountDownState extends State<_CountDown> {
               padding: const EdgeInsets.only(top: 8),
               child: Text(
                 "LATE ATTENDANCE",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.danger.withOpacity(0.8),
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          //
+          if (hasEnded)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                "SESSION ENDED",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   color: AppColors.danger.withOpacity(0.8),
