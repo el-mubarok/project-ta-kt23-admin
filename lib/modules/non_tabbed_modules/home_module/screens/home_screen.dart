@@ -96,7 +96,7 @@ class _ModuleHome extends State<ModuleHome> {
                       sessionStartLoading = true;
                     });
                   } else if (state is HomeStateSessionStarted) {
-                    print("from state session created");
+                    // print("from state session created");
                     AppHelperCommon().showSnackBar(
                       context,
                       // "Session Created",
@@ -125,18 +125,16 @@ class _ModuleHome extends State<ModuleHome> {
                           });
                         }
 
-                        print("qweqeqwe: ${state.data?.data?.endSession}");
+                        // print("qweqeqwe: ${state.data?.data?.endSession}");
+
+                        if ((state.data?.code ?? 0) >= 400) {
+                          return true;
+                        }
 
                         Navigator.pushNamed(
                           context,
                           NamedRoute.pageSession,
                           arguments: routeArg,
-                          // arguments: {
-                          //   'qrCode': state.data?.data?.qrCode,
-                          //   'start_date': state.data?.data?.start,
-                          //   'end_date': state.data?.data?.end,
-                          //   'end_date_session': state.data?.data?.endSession,
-                          // },
                         );
                       });
                     }
