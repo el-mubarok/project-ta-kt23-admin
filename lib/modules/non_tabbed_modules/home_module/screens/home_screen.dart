@@ -122,7 +122,9 @@ class _ModuleHome extends State<ModuleHome> {
                         if (state.data?.code == 201) {
                           routeArg.addAll({
                             'is_home_attendance': true,
+                            'end_date': state.data?.data?.end,
                           });
+                          routeArg.remove('end_date_session');
                         }
 
                         // print("qweqeqwe: ${state.data?.data?.endSession}");

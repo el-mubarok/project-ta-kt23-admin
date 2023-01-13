@@ -40,7 +40,7 @@ class _ModuleSession extends State<ModuleSession> {
   void initState() {
     super.initState();
     qrData = widget.qrCode;
-    print("ewrtertert: ${widget.endSession}");
+    print("ewrtertert: ${widget.endSession} ${widget.end}");
     print(qrData);
     initListener();
   }
@@ -69,11 +69,11 @@ class _ModuleSession extends State<ModuleSession> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            if (widget.end != null)
+            if (widget.endSession != null)
               _CountDown(
                 startDate: widget.start ?? DateTime.now(),
                 endDate: widget.end ?? DateTime.now(),
-                endSessionDate: widget.endSession ?? DateTime.now(),
+                endSessionDate: widget.endSession,
               ),
             //
             if (widget.isHomeAttendance)
@@ -99,6 +99,13 @@ class _ModuleSession extends State<ModuleSession> {
                       ),
                       textAlign: TextAlign.center,
                     ),
+                    //
+                    if (widget.end != null)
+                      _CountDown(
+                        startDate: widget.start ?? DateTime.now(),
+                        endDate: widget.end ?? DateTime.now(),
+                        endSessionDate: widget.endSession,
+                      ),
                   ],
                 ),
               ),
@@ -281,7 +288,7 @@ class _CountDown extends StatefulWidget {
 
   final DateTime startDate;
   final DateTime endDate;
-  final DateTime endSessionDate;
+  final DateTime? endSessionDate;
 
   @override
   State<StatefulWidget> createState() => _CountDownState();
@@ -290,7 +297,7 @@ class _CountDown extends StatefulWidget {
 class _CountDownState extends State<_CountDown> {
   DateTime startDate = DateTime(2023, 1, 4, 23, 10, 21);
   DateTime endDate = DateTime(2023, 1, 4, 24, 10, 21);
-  DateTime endSessionDate = DateTime(2023, 1, 4, 24, 10, 21);
+  DateTime? endSessionDate = DateTime(2023, 1, 4, 24, 10, 21);
   double percentageLeft = 0;
   String hours = "00";
   String minutes = "00";
@@ -342,11 +349,13 @@ class _CountDownState extends State<_CountDown> {
 
           print(endSessionDate);
 
-          if (DateTime.now().isAfter(endSessionDate)) {
-            countDownTimer?.cancel();
-            hasEnded = true;
-            Future.delayed(const Duration(seconds: 2));
-            Navigator.pop(context);
+          if (endSessionDate != null) {
+            if (DateTime.now().isAfter(endSessionDate!)) {
+              countDownTimer?.cancel();
+              hasEnded = true;
+              Future.delayed(const Duration(seconds: 2));
+              Navigator.pop(context);
+            }
           }
         });
       },
@@ -372,7 +381,9 @@ class _CountDownState extends State<_CountDown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 32),
+      padding: EdgeInsets.only(
+        top: endSessionDate != null ? 32 : 8,
+      ),
       color: AppColors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -401,7 +412,7 @@ class _CountDownState extends State<_CountDown> {
                     color: percentageLeft <= 0
                         ? AppColors.danger
                         : AppColors.black.withOpacity(0.5),
-                    fontSize: 40,
+                    fontSize: endSessionDate != null ? 40 : 20,
                   ),
                 ),
                 // Padding(
@@ -420,7 +431,7 @@ class _CountDownState extends State<_CountDown> {
           //
           if (percentageLeft > 0)
             SizedBox(
-              width: 150,
+              width: endSessionDate != null ? 150 : 105,
               child: LinearProgressIndicator(
                 value: percentageLeft / 100,
                 minHeight: 4,
@@ -438,7 +449,7 @@ class _CountDownState extends State<_CountDown> {
               ),
             ),
           //
-          if (percentageLeft <= 0)
+          if (percentageLeft <= 0 && endSessionDate != null)
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
