@@ -51,7 +51,7 @@ class Data {
   final String role;
   final String? nip;
   final String fullName;
-  final int department;
+  final int? department;
   final String username;
   final dynamic avatar;
   final DateTime createdAt;
@@ -62,7 +62,9 @@ class Data {
         role: json["role"],
         nip: json["nip"],
         fullName: json["full_name"],
-        department: int.parse(json["department"].toString()),
+        department: json["department"] != null
+            ? int.parse(json["department"].toString())
+            : null,
         username: json["username"],
         avatar: json["avatar"],
         createdAt: DateTime.parse(json["created_at"]),
